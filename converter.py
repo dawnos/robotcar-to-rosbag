@@ -2,6 +2,7 @@
 import logging
 import inspect
 from itertools import chain
+from tqdm import tqdm
 
 import rospy
 import rosbag
@@ -33,10 +34,10 @@ class Converter:
 
         bag = rosbag.Bag(out_file, 'w')
 
-        for ts, sid in sorted_timestamps_list:
+        for ts, sid in tqdm(sorted_timestamps_list):
             msg = self.sensors[sid].read_message(ts)
-            base = int(1e6)
-            t = rospy.Time(ts // base, ts % base)
+            t = rospy.Time(ts // 1000000, (ts % 1000000) * 1000)
+            # logging.info("Writing %s (%f) to %s" % (type(msg), t.to_sec(), self.sensors[sid].topic_name))
             bag.write(self.sensors[sid].topic_name, msg, t)
         bag.close()
 

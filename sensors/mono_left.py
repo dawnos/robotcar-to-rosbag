@@ -1,7 +1,7 @@
 
-from image import _Image
+from mono import Mono
 
-class MonoLeft(_Image):
+class MonoLeft(Mono):
     def __init__(self, root_dir):
-        super(MonoLeft, self).__init__("mono_left", "/mono/left", root_dir)
+        super(MonoLeft, self).__init__("left", root_dir)
     
